@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ListFilter from '../list-filter';
 import MovieItem from '../movie-item';
-import { updateList } from './movie-list.action';
 import './movie-list.css';
-import * as typeList from './movie-list.constant';
+import { connect } from 'react-redux';
+import { updateList, updateGenre } from './movie-list.action';
+// import MovieList from './movie-list.component';
+
 
 const API_KEY = process.env.REACT_APP_ARG;
 const GET_MOVIE_URL = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}`
@@ -19,13 +21,13 @@ class MovieList extends Component {
   }
 
   componentDidMount() {
-    console.log('Lui Laurientiu nu ii place axios!');
-    console.log('Nu iau din render lista! Cum sa iau din render lista?');
+    const { updateList, updateGenre } = this.props;
     let getAll = [ axios.get(GET_MOVIE_URL) ];
     const genre = window.localStorage.getItem('genre');
 
+    let genreList;
     if (genre) {
-      const genreList = JSON.parse(window.localStorage.getItem('genre'))
+      genreList = JSON.parse(window.localStorage.getItem('genre'))
       this.setState({genreList})
     } else {
       getAll.push(axios.get(GET_GENRE_URL))
@@ -54,7 +56,9 @@ class MovieList extends Component {
             window.localStorage.setItem('genre', JSON.stringify(genreList));
             state.genreList = [...genreList];
           }
-
+          
+          updateGenre(genreList);
+          
           // get genreFilter
           const genreFilter = [
             ...new Set(state.movieList.map(m => m.genre_ids).reduce((a, c) => a.concat(c)))
@@ -67,10 +71,7 @@ class MovieList extends Component {
             );
 
           state.genreFilter = genreFilter;
-          updateList({
-            type: typeList.MOVIE_LIST_UPDATE,
-            payload: state.movieList
-          })
+          updateList(response[0].data.results)
           return state;
         })
       }))
@@ -124,10 +125,7 @@ class MovieList extends Component {
       .filter(movie => this.state.ratingFilter.filter(x => x.active).length ? (this.state.ratingFilter.filter(rating => rating.name === Math.round(movie.vote_average) && rating.active)).length : true)
 
       // Genre filter
-      .filter(movie => this.state.genreFilter.filter(x => x.active).length ? this.state.genreFilter.filter(a => a.active).filter(g => {
-        console.log(movie.id, g.id)
-        return movie.genre_ids.includes(g.id)
-      }).length === this.state.genreFilter.filter(a => a.active).length : true)
+      .filter(movie => this.state.genreFilter.filter(x => x.active).length ? this.state.genreFilter.filter(a => a.active).filter(g => movie.genre_ids.includes(g.id)).length === this.state.genreFilter.filter(a => a.active).length : true)
 
       .map((movie, key) => (
         <MovieItem key={key} {...movie}/>
@@ -154,4 +152,14 @@ class MovieList extends Component {
   }
 }
 
-export default MovieList;
+// export default MovieList;
+const mapStateToProp = state => ({
+  movieList: state.movieList,
+  movieGenre: state.movieGenre
+});
+
+const mapDispatchToProp = dispatch => ({
+  updateList: list => dispatch(updateList(list)),
+  updateGenre: list => dispatch(updateGenre(list))
+});
+export default connect(mapStateToProp, mapDispatchToProp)(MovieList);
