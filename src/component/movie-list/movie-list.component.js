@@ -14,28 +14,24 @@ const GET_GENRE_URL = `https://api.themoviedb.org/3/genre/movie/list?api_key=${A
 
 class MovieList extends Component {
   componentDidMount() {
-    const { updateList, updateGenre, getGenre, getMovieList, setRangeFilter, movieList } = this.props;
-    let getAll = [ axios.get(GET_MOVIE_URL) ];
+    const { updateGenre, getGenre, getMovieList, movieList, genreList } = this.props;
+    getMovieList();
+    
     const genre = window.localStorage.getItem('genre');
-
-    let genreList;
     if (genre) {
-      genreList = JSON.parse(window.localStorage.getItem('genre'))
-      // this.setState({genreList});
-      updateGenre(genreList);
+      // genreList = JSON.parse(window.localStorage.getItem('genre'))
+      updateGenre({value: genreList, enabledIds: movieList.map(movie => movie.genre_ids)});
     } else {
-      // getAll.push(axios.get(GET_GENRE_URL))
       getGenre()
     }
-    getMovieList();
 
     // 
   }
 
   updateFilterList = (filterId, filterType) => {
-    const { updateActive } = this.props;
+    const { updateActive, movieList } = this.props;
     if (filterType ==='genre') {
-      updateActive({value: filterId, type: 'genre'});
+      updateActive({value: filterId, type: 'genre', enabledIds: movieList.map(movie => movie.genre_ids)});
     } else if (filterType ==='rating') {
       updateActive({value: filterId, type: 'rating'})
     }
@@ -43,12 +39,12 @@ class MovieList extends Component {
 
   renderFilter = which => {
     if (which === 'genre') {
-      console.log(this.props.genreList)
-      return this.props.genreList.map(({id, name, active}, k) => {
+      return this.props.genreList.map(({id, name, active, disabled}, k) => {
         const props = {
           "key": k,
-          "id": id,
-          "name": name,
+          id,
+          disabled,
+          name,
           "filterType": which,
           "updateFilterList": this.updateFilterList,
           active
@@ -122,6 +118,6 @@ const mapDispatchToProp = dispatch => ({
   getMovieList: () => dispatch(getMovieList()),
   setRangeFilter: (rating) => dispatch(setRangeFilter(rating)),
   updateActive: (filterId) => dispatch(updateActive(filterId)),
-  updateGenre: list => dispatch(updateGenre(list))
+  updateGenre: (list) => dispatch(updateGenre(list))
 });
 export default connect(mapStateToProp, mapDispatchToProp)(MovieList);

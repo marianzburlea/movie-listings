@@ -1,10 +1,11 @@
 import React from 'react';
 import './list-filter.css';
 
-const ListFilter = ({name, updateFilterList, id, active, filterType}) => {
+const ListFilter = ({name, updateFilterList, id, active, filterType, disabled}) => {
   return (
-    <div onClick={() => updateFilterList(id, filterType)}
-      className={`genre__filter--${active ? 'active' : 'normal'}`}>{name}</div>
+    <button onClick={() => updateFilterList(id, filterType)}
+      disabled={disabled}
+      className={`genre__filter--${active ? 'active' : disabled ? 'disabled' : 'normal'}`}>{name}</button>
   );
 }
 

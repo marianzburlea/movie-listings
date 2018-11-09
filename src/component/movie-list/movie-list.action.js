@@ -15,20 +15,21 @@ const updateList = payload => {
 const updateActive = payload => {
   return {
     type: payload.type === 'rating' ? typeList.UPDATE_RATING_FILTER: typeList.UPDATE_GENRE_FILTER,
-    payload: payload.value
+    payload: payload.value,
+    enabledIds: payload.enabledIds
   }
 }
 
 const updateGenre = payload => {
   const call = {
     type: typeList.MOVIE_GENRE_UPDATE,
-    payload
+    payload: payload.value,
+    enabledIds: payload.enabledIds
   }
   return call;
 }
 
 const setRangeFilter = payload => {
-  console.log(payload)
   const call = {
     type: typeList.MOVIE_SET_RANGE_FILTER,
     payload: payload.results
@@ -47,11 +48,12 @@ const setGenreFilter = payload => {
 }
 
 const getGenre = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     axios
       .get(GET_GENRE_URL)
       .then( ({data}) => {
-        dispatch(updateGenre(data.genres));
+        console.log(getState())
+        dispatch(updateGenre({value: data.genres, enabledIds: getState().movieList.map(movie => movie.genre_ids)}));
       })
       
     };
