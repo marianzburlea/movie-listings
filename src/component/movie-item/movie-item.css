@@ -1,0 +1,16 @@
+.movie__item {
+  background-size: cover;
+  min-height: 750px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  translate: 0.2s;
+  box-shadow: var(--box-shadow-distance) var(--box-shadow-distance) 1rem black;
+  transform: scale(0.98);
+  transition: 0.15s;
+}
+
+.movie__item:hover{
+  transform: scale(1)
+}

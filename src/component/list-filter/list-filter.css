@@ -1,0 +1,17 @@
+.genre__filter--normal,
+.genre__filter--active {
+  cursor: pointer;
+  color: white;
+  padding: 0.5rem 1rem;
+  margin: 10px 4px;
+  border-radius: 5px;
+}
+
+.genre__filter--normal {
+  background-color: #f1f1f1;
+  color: black;
+}
+
+.genre__filter--active {
+  background-color: #c0c;
+}

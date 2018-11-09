@@ -1,0 +1,7 @@
+.movie__title {
+  text-align: center;
+  min-height: 3rem;
+  font-family: 'Gabriela', serif;
+  padding-top: var(--movie-star-width);
+}
+
