@@ -53,7 +53,10 @@ const getGenre = () => {
       .get(GET_GENRE_URL)
       .then( ({data}) => {
         // console.log(getState())
-        console.log(getState(), '# aici 1', data)
+        // const genreList = JSON.parse(window.localStorage.getItem('genre'));
+        // if (genreList) {
+        //   data.genres = genreList;
+        // }
         dispatch(updateGenre({value: data.genres, enabledIds: getState().movieList.map(movie => movie.genre_ids)}));
       })
       
@@ -61,13 +64,20 @@ const getGenre = () => {
   }
   
 const getMovieList = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     axios
       .get(GET_MOVIE_URL)
       .then( ({data}) => {
-        dispatch(updateList(data));
+        // updateGenre({value: genre, enabledIds: movieList.map(movie => movie.genre_ids)});
+        // debugger
         dispatch(setRangeFilter(data));
+        return dispatch(updateList(data))
       })
+      .then(({data}) => {
+        console.log(data, getState())
+        dispatch(getGenre());
+        // dispatch(updateGenre({value: data.genres, enabledIds: getState().movieList.map(movie => movie.genre_ids)}));
+      });
       
   };
 }

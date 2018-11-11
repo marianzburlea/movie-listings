@@ -21,6 +21,7 @@ const movieGenreReducer = (state = [], action) => {
       // return action;
       // return [...state];
       // return action.payload
+
       return [...action.payload.map(v => ({...v, active: false, disabled: !enabledIdList.includes(v.id)}))];
     
     case typeList.UPDATE_GENRE_FILTER:

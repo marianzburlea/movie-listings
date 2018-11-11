@@ -11,15 +11,15 @@ class MovieList extends Component {
     const { updateGenre, getGenre, getMovieList, movieList, genreList } = this.props;
     getMovieList();
     
-    const genre = JSON.parse(window.localStorage.getItem('genre'));
+    // const genre = JSON.parse(window.localStorage.getItem('genre'));
 
-    if (genre) {
-      // genreList = JSON.parse(window.localStorage.getItem('genre'))
-      console.log(genreList, '# aici 2')
-      updateGenre({value: genre, enabledIds: movieList.map(movie => movie.genre_ids)});
-    } else {
-      getGenre()
-    }
+    // if (genre && movieList && movieList.length) {
+    //   debugger;
+    //   // genreList = JSON.parse(window.localStorage.getItem('genre'))
+    //   updateGenre({value: genre, enabledIds: movieList.map(movie => movie.genre_ids)});
+    // } else {
+    //   getGenre()
+    // }
 
     // 
   }
