@@ -48,8 +48,9 @@ const ratingFilterReducer = (state = [], action) => {
 
       return state;
     case typeList.UPDATE_RATING_FILTER:
-      return state.map(g => g.name === action.payload ? {...g, active: !g.active} : g);
-
+      return state
+        .map(g => ({...g, ...{active: false}}))
+        .map(g => g.name === action.payload ? {...g, active: !g.active} : g);
     default:
       return state;
   }
