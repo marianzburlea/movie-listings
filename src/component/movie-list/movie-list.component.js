@@ -69,7 +69,7 @@ class MovieList extends Component {
         .sort((a, b) => b.popularity - a.popularity)
   
         // Rating filter
-        .filter(movie => ratingFilter.filter(x => x.active).length ? (ratingFilter.filter(rating => rating.name === Math.round(movie.vote_average) && rating.active)).length : true)
+        .filter(movie => ratingFilter.filter(x => x.active).length ? (ratingFilter.filter(rating => rating.name < movie.vote_average && rating.active)).length : true)
   
         // Genre filter
         .filter(movie => this.props.genreList.filter(x => x.active).length ? this.props.genreList.filter(a => a.active).filter(g => movie.genre_ids.includes(g.id)).length === this.props.genreList.filter(a => a.active).length : true)
