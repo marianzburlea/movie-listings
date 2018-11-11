@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import ListFilter from '../list-filter';
 import MovieItem from '../movie-item';
 import './movie-list.css';
@@ -7,20 +6,17 @@ import { connect } from 'react-redux';
 import { updateList, updateGenre, getGenre, getMovieList, setRangeFilter, updateActive } from './movie-list.action';
 // import MovieList from './movie-list.component';
 
-
-const API_KEY = process.env.REACT_APP_ARG;
-const GET_MOVIE_URL = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}`
-const GET_GENRE_URL = `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
-
 class MovieList extends Component {
   componentDidMount() {
     const { updateGenre, getGenre, getMovieList, movieList, genreList } = this.props;
     getMovieList();
     
-    const genre = window.localStorage.getItem('genre');
+    const genre = JSON.parse(window.localStorage.getItem('genre'));
+
     if (genre) {
       // genreList = JSON.parse(window.localStorage.getItem('genre'))
-      updateGenre({value: genreList, enabledIds: movieList.map(movie => movie.genre_ids)});
+      console.log(genreList, '# aici 2')
+      updateGenre({value: genre, enabledIds: movieList.map(movie => movie.genre_ids)});
     } else {
       getGenre()
     }

@@ -14,10 +14,10 @@ const movieGenreReducer = (state = [], action) => {
   switch(action.type) {
     case typeList.MOVIE_GENRE_UPDATE:
       window.localStorage.setItem('genre', JSON.stringify(action.payload));
-      if (action.enabledIds.length) {
-      }
+      // if (action.enabledIds.length) {
+      // }
       const enabledIdList = action.enabledIds.length && [...new Set(action.enabledIds.reduce((a, c) => a.concat(c)))] || [];
-      console.log('action', enabledIdList, [...action.payload.map(v => ({...v, active: false, enabled: enabledIdList.includes(v.id)}))], action.payload, state)
+      // console.log('action', enabledIdList, [...action.payload.map(v => ({...v, active: false, enabled: enabledIdList.includes(v.id)}))], action.payload, state)
       // return action;
       // return [...state];
       // return action.payload

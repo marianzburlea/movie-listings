@@ -52,7 +52,8 @@ const getGenre = () => {
     axios
       .get(GET_GENRE_URL)
       .then( ({data}) => {
-        console.log(getState())
+        // console.log(getState())
+        console.log(getState(), '# aici 1', data)
         dispatch(updateGenre({value: data.genres, enabledIds: getState().movieList.map(movie => movie.genre_ids)}));
       })
       
