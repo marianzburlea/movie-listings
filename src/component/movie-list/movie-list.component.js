@@ -8,20 +8,8 @@ import { updateList, updateGenre, getGenre, getMovieList, setRangeFilter, update
 
 class MovieList extends Component {
   componentDidMount() {
-    const { updateGenre, getGenre, getMovieList, movieList, genreList } = this.props;
+    const { getMovieList } = this.props;
     getMovieList();
-    
-    // const genre = JSON.parse(window.localStorage.getItem('genre'));
-
-    // if (genre && movieList && movieList.length) {
-    //   debugger;
-    //   // genreList = JSON.parse(window.localStorage.getItem('genre'))
-    //   updateGenre({value: genre, enabledIds: movieList.map(movie => movie.genre_ids)});
-    // } else {
-    //   getGenre()
-    // }
-
-    // 
   }
 
   updateFilterList = (filterId, filterType) => {
